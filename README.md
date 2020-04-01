@@ -1,2 +1,2 @@
-# Pr-cticas-Compiladores
+# Practicas-Compiladores
 Prácticas de la materia de compiladores
