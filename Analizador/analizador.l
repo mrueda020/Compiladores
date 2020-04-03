@@ -32,7 +32,7 @@ WS  [ \t\v\f]
 "//".*                  { /* consume //-comment */ }
 \n                      {lineas++;}
 "auto"					{ return(AUTO); }
-"break"					{ printf("Keyword %s\n",yytext);return(BREAK); }
+"break"					{ return(BREAK); }
 "case"					{ return(CASE); }
 "char"					{ return(CHAR); }
 "const"					{ return(CONST); }
@@ -43,16 +43,16 @@ WS  [ \t\v\f]
 "else"					{ return(ELSE); }
 "enum"					{ return(ENUM); }
 "extern"				{ return(EXTERN); }
-"float"					{ printf("Keyword %s\n",yytext);return(FLOAT); }
-"for"					{ printf("Keyword %s\n",yytext);return(FOR); }
+"float"					{ return(FLOAT); }
+"for"					{ return(FOR); }
 "goto"					{ return(GOTO); }
-"if"					{ printf("Keyword %s\n",yytext);return(IF); }
+"if"					{ return(IF); }
 "inline"				{ return(INLINE); }
-"int"					{ printf("Keyword %s\n",yytext);return(INT); }
+"int"					{ return(INT); }
 "long"					{ return(LONG); }
 "register"				{ return(REGISTER); }
 "restrict"				{ return(RESTRICT); }
-"return"				{ printf("Keyword %s\n",yytext);return(RETURN); }
+"return"				{ return(RETURN); }
 "short"					{ return(SHORT); }
 "signed"				{ return(SIGNED); }
 "sizeof"				{ return(SIZEOF); }
@@ -64,7 +64,7 @@ WS  [ \t\v\f]
 "unsigned"				{ return(UNSIGNED); }
 "void"					{ return(VOID); }
 "volatile"				{ return(VOLATILE); }
-"while"					{ printf("Keyword %s\n",yytext);return(WHILE); }
+"while"					{ return(WHILE); }
 "_Alignas"                              { return ALIGNAS; }
 "_Alignof"                              { return ALIGNOF; }
 "_Atomic"                               { return ATOMIC; }
@@ -77,7 +77,7 @@ WS  [ \t\v\f]
 "_Thread_local"                         { return THREAD_LOCAL; }
 "__func__"                              { return FUNC_NAME; }
 
-{L}{A}*					{ return IDENTIFIER; }
+{L}{A}*					{return IDENTIFIER; }
 
 {HP}{H}+{IS}?				{ return I_CONSTANT; }
 {NZ}{D}*{IS}?				{ return I_CONSTANT; }

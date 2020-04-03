@@ -41,7 +41,9 @@ int main(){
     v = 'k';
 
    
-
+    while(1){
+        v = 'c';
+    }
     return (0);
    /* Compiladores */
 

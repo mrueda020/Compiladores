@@ -28,7 +28,7 @@
 %%
 
 primary_expression
-	: IDENTIFIER
+	: IDENTIFIER 
 	| constant
 	| string
 	| '(' expression ')'
@@ -206,7 +206,7 @@ declaration
 declaration_specifiers
 	: storage_class_specifier declaration_specifiers
 	| storage_class_specifier
-	| type_specifier declaration_specifiers
+	| type_specifier declaration_specifiers 
 	| type_specifier
 	| type_qualifier declaration_specifiers
 	| type_qualifier
@@ -222,7 +222,7 @@ init_declarator_list
 	;
 
 init_declarator
-	: declarator '=' initializer
+	: declarator '=' initializer 
 	| declarator
 	;
 
@@ -339,7 +339,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER
+	: IDENTIFIER {printf("Soy un Identificador \n");}
 	| '(' declarator ')'
 	| direct_declarator '[' ']'
 	| direct_declarator '[' '*' ']'
@@ -385,7 +385,7 @@ parameter_declaration
 	;
 
 identifier_list
-	: IDENTIFIER
+	: IDENTIFIER 
 	| identifier_list ',' IDENTIFIER
 	;
 
@@ -491,16 +491,16 @@ expression_statement
 	;
 
 selection_statement
-	: IF '(' expression ')' statement ELSE statement
-	| IF '(' expression ')' statement
-	| SWITCH '(' expression ')' statement
+	: IF '(' expression ')' statement ELSE statement {printf("Soy un If-Else\n");}
+	| IF '(' expression ')' statement {printf("Soy un If\n");}
+	| SWITCH '(' expression ')' statement {printf("Soy un Switch \n");}
 	;
 
 iteration_statement
-	: WHILE '(' expression ')' statement
+	: WHILE '(' expression ')' statement {printf("Soy un while\n");}
 	| DO statement WHILE '(' expression ')' ';'
-	| FOR '(' expression_statement expression_statement ')' statement
-	| FOR '(' expression_statement expression_statement expression ')' statement
+	| FOR '(' expression_statement expression_statement ')' statement 
+	| FOR '(' expression_statement expression_statement expression ')' statement {printf("Soy un ciclo For\n");}
 	| FOR '(' declaration expression_statement ')' statement
 	| FOR '(' declaration expression_statement expression ')' statement
 	;
