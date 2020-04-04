@@ -5,7 +5,7 @@
 void comment();
 extern void yyerror(const char *);  /* prints grammar violation message */
 
-int lineas = 0;
+int lineas = 0; // Cuenta el numero de lineas
  
 %}
 
