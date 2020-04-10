@@ -77,7 +77,7 @@ WS  [ \t\v\f]
 "_Thread_local"                         { return THREAD_LOCAL; }
 "__func__"                              { return FUNC_NAME; }
 
-{L}{A}*					{return IDENTIFIER; }
+{L}{A}*					{yylval.str = strdup(yytext);return IDENTIFIER; }
 
 {HP}{H}+{IS}?				{ return I_CONSTANT; }
 {NZ}{D}*{IS}?				{ return I_CONSTANT; }

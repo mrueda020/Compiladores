@@ -7,7 +7,11 @@
 	}
 %}
 
-%token	IDENTIFIER I_CONSTANT F_CONSTANT STRING_LITERAL FUNC_NAME SIZEOF
+%union{
+	char* str;
+}
+
+%token <str> IDENTIFIER I_CONSTANT F_CONSTANT STRING_LITERAL FUNC_NAME SIZEOF
 %token	PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
 %token	AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
 %token	SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN
@@ -23,7 +27,7 @@
 %token	CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
 %token	ALIGNAS ALIGNOF ATOMIC GENERIC NORETURN STATIC_ASSERT THREAD_LOCAL
-
+%type <str> direct_declarator
 %start translation_unit  /*Simbolo Inicial*/
 %%
 
@@ -339,7 +343,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER {printf("Soy un Identificador \n");}
+	: IDENTIFIER {printf("Identificador %s\n",$1);}
 	| '(' declarator ')'
 	| direct_declarator '[' ']'
 	| direct_declarator '[' '*' ']'
