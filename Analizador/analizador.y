@@ -12,22 +12,26 @@
 }
 
 %token <str> IDENTIFIER I_CONSTANT F_CONSTANT STRING_LITERAL FUNC_NAME SIZEOF
-%token	PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
-%token	AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
-%token	SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN
-%token	XOR_ASSIGN OR_ASSIGN
-%token	TYPEDEF_NAME ENUMERATION_CONSTANT
+%token <str>	PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
+%token <str>	AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
+%token <str>	SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN
+%token <str>	XOR_ASSIGN OR_ASSIGN
+%token <str> TYPEDEF_NAME ENUMERATION_CONSTANT
 
-%token	TYPEDEF EXTERN STATIC AUTO REGISTER INLINE
-%token	CONST RESTRICT VOLATILE
-%token	BOOL CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE VOID
-%token	COMPLEX IMAGINARY 
-%token	STRUCT UNION ENUM ELLIPSIS
+%token <str>	TYPEDEF EXTERN STATIC AUTO REGISTER INLINE
+%token <str>	CONST RESTRICT VOLATILE
+%token <str>	BOOL CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE VOID
+%token <str>	COMPLEX IMAGINARY 
+%token <str> STRUCT UNION ENUM ELLIPSIS
 
-%token	CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
+%token <str>	CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
-%token	ALIGNAS ALIGNOF ATOMIC GENERIC NORETURN STATIC_ASSERT THREAD_LOCAL
-%type <str> direct_declarator
+%token <str>	ALIGNAS ALIGNOF ATOMIC GENERIC NORETURN STATIC_ASSERT THREAD_LOCAL
+%type <str> direct_declarator expression iteration_statement assignment_expression conditional_expression
+%type <str> unary_expression assignment_operator  declarator postfix_expression cast_expression type_name
+%type <str> logical_or_expression primary_expression initializer_list unary_operator constant
+%type <tr> string generic_selection 
+
 %start translation_unit  /*Simbolo Inicial*/
 %%
 
@@ -497,14 +501,14 @@ expression_statement
 selection_statement
 	: IF '(' expression ')' statement ELSE statement {printf("Soy un If-Else\n");}
 	| IF '(' expression ')' statement {printf("Soy un If\n");}
-	| SWITCH '(' expression ')' statement {printf("Soy un Switch \n");}
+	| SWITCH '(' expression ')' statement {printf("Soy un Switch con %s \n",$3);}
 	;
 
 iteration_statement
-	: WHILE '(' expression ')' statement {printf("Soy un while\n");}
+	: WHILE '(' expression ')' statement {printf("Soy un while y mi condicion es %s\n",$3);}
 	| DO statement WHILE '(' expression ')' ';'
 	| FOR '(' expression_statement expression_statement ')' statement 
-	| FOR '(' expression_statement expression_statement expression ')' statement {printf("Soy un ciclo For\n");}
+	| FOR '(' expression_statement expression_statement expression ')' statement {printf("Soy un ciclo For  y mi condicion es %s\n",$5);}
 	| FOR '(' declaration expression_statement ')' statement
 	| FOR '(' declaration expression_statement expression ')' statement
 	;

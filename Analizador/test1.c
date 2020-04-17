@@ -38,11 +38,11 @@ int main(){
     }
 
     char v;
-    v = 'k';
+    i = 'k';
 
    
-    while(1){
-        v = 'c';
+    while(fl<10){
+        v++;
     }
     return (0);
    /* Compiladores */

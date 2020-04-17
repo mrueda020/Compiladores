@@ -79,10 +79,10 @@ WS  [ \t\v\f]
 
 {L}{A}*					{yylval.str = strdup(yytext);return IDENTIFIER; }
 
-{HP}{H}+{IS}?				{ return I_CONSTANT; }
-{NZ}{D}*{IS}?				{ return I_CONSTANT; }
-"0"{O}*{IS}?				{ return I_CONSTANT; }
-{CP}?"'"([^'\\\n]|{ES})+"'"		{ return I_CONSTANT; }
+{HP}{H}+{IS}?				{ yylval.str = strdup(yytext); return I_CONSTANT; }
+{NZ}{D}*{IS}?				{ yylval.str = strdup(yytext); return I_CONSTANT; }
+"0"{O}*{IS}?				{ yylval.str = strdup(yytext); return I_CONSTANT; }
+{CP}?"'"([^'\\\n]|{ES})+"'"		{ yylval.str = strdup(yytext); return I_CONSTANT; }
 
 {D}+{E}{FS}?				{ return F_CONSTANT; }
 {D}*"."{D}+{E}?{FS}?			{ return F_CONSTANT; }
@@ -134,7 +134,7 @@ WS  [ \t\v\f]
 "*"					{ return '*'; }
 "/"					{ return '/'; }
 "%"					{ return '%'; }
-"<"					{ return '<'; }
+"<"					{ yylval.str = strdup(yytext); return '<'; }
 ">"					{ return '>'; }
 "^"					{ return '^'; }
 "|"					{ return '|'; }
