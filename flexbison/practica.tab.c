@@ -106,7 +106,8 @@ extern int yydebug;
   {
     ENTER = 258,
     MAS = 259,
-    ENTERO = 260
+    ENTERO = 260,
+    MENOS = 261
   };
 #endif
 
@@ -126,7 +127,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 130 "practica.tab.c" /* yacc.c:358  */
+#line 131 "practica.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -368,21 +369,21 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  6
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   8
+#define YYLAST   10
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  6
+#define YYNTOKENS  7
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  4
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  7
+#define YYNRULES  8
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  11
+#define YYNSTATES  13
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   260
+#define YYMAXUTOK   261
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -417,14 +418,14 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5
+       5,     6
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    10,    10,    11,    13,    14,    16,    17
+       0,    10,    10,    11,    13,    14,    16,    17,    18
 };
 #endif
 
@@ -433,8 +434,8 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "ENTER", "MAS", "ENTERO", "$accept",
-  "programa", "linea", "expresion", YY_NULLPTR
+  "$end", "error", "$undefined", "ENTER", "MAS", "ENTERO", "MENOS",
+  "$accept", "programa", "linea", "expresion", YY_NULLPTR
 };
 #endif
 
@@ -443,14 +444,14 @@ static const char *const yytname[] =
    (internal) symbol number NUM (which must be that of a token).  */
 static const yytype_uint16 yytoknum[] =
 {
-       0,   256,   257,   258,   259,   260
+       0,   256,   257,   258,   259,   260,   261
 };
 # endif
 
-#define YYPACT_NINF -5
+#define YYPACT_NINF -3
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-5)))
+  (!!((Yystate) == (-3)))
 
 #define YYTABLE_NINF -1
 
@@ -461,8 +462,8 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -1,    -5,    -5,     0,    -5,     3,    -5,    -5,    -5,    -4,
-      -5
+       3,    -3,    -3,     0,    -3,    -2,    -3,    -3,    -3,     2,
+       4,    -3,    -3
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -470,14 +471,14 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     5,     7,     0,     2,     0,     1,     3,     4,     0,
-       6
+       0,     5,     8,     0,     2,     0,     1,     3,     4,     0,
+       0,     6,     7
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -5,    -5,     5,    -5
+      -3,    -3,     7,    -3
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -491,32 +492,34 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       6,    10,     1,     1,     2,     2,     8,     9,     7
+       6,     8,     9,     1,    10,     2,     1,    11,     2,    12,
+       7
 };
 
 static const yytype_uint8 yycheck[] =
 {
-       0,     5,     3,     3,     5,     5,     3,     4,     3
+       0,     3,     4,     3,     6,     5,     3,     5,     5,     5,
+       3
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     5,     7,     8,     9,     0,     8,     3,     4,
-       5
+       0,     3,     5,     8,     9,    10,     0,     9,     3,     4,
+       6,     5,     5
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,     6,     7,     7,     8,     8,     9,     9
+       0,     7,     8,     8,     9,     9,    10,    10,    10
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     2,     2,     1,     3,     1
+       0,     2,     1,     2,     2,     1,     3,     3,     1
 };
 
 
@@ -1195,23 +1198,29 @@ yyreduce:
         case 4:
 #line 13 "practica.y" /* yacc.c:1646  */
     { printf("R=%d\n", (yyvsp[-1]));}
-#line 1199 "practica.tab.c" /* yacc.c:1646  */
+#line 1202 "practica.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
 #line 16 "practica.y" /* yacc.c:1646  */
-    { (yyval) = (yyvsp[-2]) +(yyvsp[0]); }
-#line 1205 "practica.tab.c" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-2])+(yyvsp[0]);}
+#line 1208 "practica.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
 #line 17 "practica.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-2])-(yyvsp[0]);}
+#line 1214 "practica.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 18 "practica.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[0]);}
-#line 1211 "practica.tab.c" /* yacc.c:1646  */
+#line 1220 "practica.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1215 "practica.tab.c" /* yacc.c:1646  */
+#line 1224 "practica.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1439,7 +1448,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 19 "practica.y" /* yacc.c:1906  */
+#line 20 "practica.y" /* yacc.c:1906  */
 
 int main (void){
 	return yyparse();

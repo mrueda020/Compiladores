@@ -47,7 +47,8 @@ extern int yydebug;
   {
     ENTER = 258,
     MAS = 259,
-    ENTERO = 260
+    ENTERO = 260,
+    MENOS = 261
   };
 #endif
 

@@ -5,7 +5,7 @@
 	}
 %}
 
-%token ENTER MAS ENTERO
+%token ENTER MAS ENTERO MENOS
 %%
 programa: linea
 | programa linea
@@ -13,7 +13,8 @@ programa: linea
 linea: expresion ENTER	{ printf("R=%d\n", $1);}
 | ENTER
 ;
-expresion: expresion MAS ENTERO 	{ $$ = $1 +$3; }
+expresion: expresion MAS ENTERO 	{ $$ = $1+$3;}
+|expresion MENOS ENTERO 	{ $$ = $1-$3;}
 | ENTERO							{ $$ = $1;}
 ;
 %%

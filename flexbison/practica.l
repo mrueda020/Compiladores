@@ -6,5 +6,6 @@
 %%
 [0-9]+ 	{yylval=atoi(yytext); return ENTERO; }
 \+ { return MAS; }
+\- { return MENOS;}
 \n 	{ return ENTER; }
 .
