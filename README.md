@@ -1,4 +1,4 @@
-# Practicas-Compiladores
+# Prácticas-Compiladores
 Prácticas de la materia de compiladores para el semestre 2020/2
 
 - Práctica 1 ER a AFN
