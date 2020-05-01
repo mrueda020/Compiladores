@@ -10,9 +10,9 @@ Modo de uso:
 
 - ./a.out "abcd|a*bcd+|(abcd)+"  **Puede ser cualquier otra Expresion Regular**
 
-- **Salida**
+**Salida**
 
-- ![AFN](Practicas-Compiladores/Practica 1/salida.png)
+![AFN](salida.png)
 
 
 
