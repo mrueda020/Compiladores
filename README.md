@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Prácticas-Compiladores
 Prácticas de la materia de compiladores para el semestre 2020/2
 
@@ -6,7 +5,8 @@ Prácticas de la materia de compiladores para el semestre 2020/2
 - Lenguaje de juguete tipo Pascal
 - RPNCAL
 - Calculadora básica (flexbison)
-=======
+
+
 # Proyecto
 Proyecto para la materia de compiladores
 
@@ -19,5 +19,3 @@ El archivo analizador.y contiene la gramatica para el lenguaje C
 Version de flex : 2.6.4
 
 Version de bison: 3.0.4
-
->>>>>>> repo-b/master
