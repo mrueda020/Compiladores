@@ -7,7 +7,7 @@ analizador.tab.o: analizador.tab.c
 lex.yy.o: lex.yy.c
 	gcc lex.yy.c -c
 a.out: analizador.tab.o lex.yy.o
-	gcc  lex.yy.o analizador.tab.o  -ll -lm -ly 
+	gcc  lex.yy.o analizador.tab.o  -ll -lm 
 run: a.out
 	./a.out "test1.c"
 
