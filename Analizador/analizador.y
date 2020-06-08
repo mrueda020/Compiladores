@@ -15,7 +15,7 @@
 %token <str>	PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
 %token <str>	AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
 %token <str>	SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN
-%token <str>	XOR_ASSIGN OR_ASSIGN
+%token <str>	XOR_ASSIGN OR_ASSIGN '<' '>' '+'
 %token <str> TYPEDEF_NAME ENUMERATION_CONSTANT
 
 %token <str>	TYPEDEF EXTERN STATIC AUTO REGISTER INLINE
@@ -30,8 +30,9 @@
 %type <str> direct_declarator expression iteration_statement assignment_expression conditional_expression
 %type <str> unary_expression assignment_operator  declarator postfix_expression cast_expression type_name
 %type <str> logical_or_expression primary_expression initializer_list unary_operator constant
-%type <tr> string generic_selection 
-
+%type <str> string generic_selection relational_expression shift_expression equality_expression
+%type <str> labeled_statement init_declarator initializer declaration_specifiers type_specifier
+%type <str> jump_statement 
 %start translation_unit  /*Simbolo Inicial*/
 %%
 
@@ -135,7 +136,7 @@ shift_expression
 
 relational_expression
 	: shift_expression
-	| relational_expression '<' shift_expression
+	| relational_expression '<' shift_expression {printf("%s %s %s ",$1,$2,$3);}
 	| relational_expression '>' shift_expression
 	| relational_expression LE_OP shift_expression
 	| relational_expression GE_OP shift_expression
@@ -143,7 +144,7 @@ relational_expression
 
 equality_expression
 	: relational_expression
-	| equality_expression EQ_OP relational_expression
+	| equality_expression EQ_OP relational_expression {printf("%s %s %s ",$1,$2,$3);}
 	| equality_expression NE_OP relational_expression
 	;
 
@@ -179,7 +180,7 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression
-	| unary_expression assignment_operator assignment_expression
+	| unary_expression assignment_operator assignment_expression {printf("%s %s %s\n",$1,$2,$3);}
 	;
 
 assignment_operator
@@ -215,7 +216,7 @@ declaration_specifiers
 	: storage_class_specifier declaration_specifiers
 	| storage_class_specifier
 	| type_specifier declaration_specifiers 
-	| type_specifier
+	| type_specifier 								{printf("%s ",$1);}
 	| type_qualifier declaration_specifiers
 	| type_qualifier
 	| function_specifier declaration_specifiers
@@ -230,7 +231,7 @@ init_declarator_list
 	;
 
 init_declarator
-	: declarator '=' initializer 
+	: declarator '=' initializer {printf("%s = %s\n",$1,$3);} 
 	| declarator
 	;
 
@@ -464,7 +465,7 @@ static_assert_declaration
 	;
 
 statement
-	: labeled_statement
+	: labeled_statement 
 	| compound_statement
 	| expression_statement
 	| selection_statement
@@ -473,7 +474,7 @@ statement
 	;
 
 labeled_statement
-	: IDENTIFIER ':' statement
+	: IDENTIFIER ':' statement 
 	| CASE constant_expression ':' statement
 	| DEFAULT ':' statement
 	;
@@ -501,14 +502,14 @@ expression_statement
 selection_statement
 	: IF '(' expression ')' statement ELSE statement {printf("Soy un If-Else\n");}
 	| IF '(' expression ')' statement {printf("Soy un If\n");}
-	| SWITCH '(' expression ')' statement {printf("Soy un Switch con %s \n",$3);}
+	| SWITCH '(' expression ')' statement {printf("Soy un Switch\n");}
 	;
 
 iteration_statement
-	: WHILE '(' expression ')' statement {printf("Soy un while y mi condicion es %s\n",$3);}
+	: WHILE '(' expression ')' statement {printf("Soy un while\n");}
 	| DO statement WHILE '(' expression ')' ';'
 	| FOR '(' expression_statement expression_statement ')' statement 
-	| FOR '(' expression_statement expression_statement expression ')' statement {printf("Soy un ciclo For  y mi condicion es %s\n",$5);}
+	| FOR '(' expression_statement expression_statement expression ')' statement {printf("Soy un ciclo For\n");}
 	| FOR '(' declaration expression_statement ')' statement
 	| FOR '(' declaration expression_statement expression ')' statement
 	;
@@ -518,7 +519,7 @@ jump_statement
 	| CONTINUE ';'
 	| BREAK ';'
 	| RETURN ';'
-	| RETURN expression ';'
+	| RETURN expression ';' {printf("return %s\n",$2);}
 	;
 
 translation_unit

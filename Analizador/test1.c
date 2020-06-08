@@ -1,50 +1,52 @@
-
-//#include <stdio.h>
-
-void algo(){
-    int d = 0;
+void algo()
+{
+    int c = 0;
 }
-
-
-
-int main(){
-    int q,b,cd;
+float algo2()
+{
+    return 0.5;
+}
+int main()
+{
+    int q, b, cd;
     int x = 10;
     q = 10;
     b = cd;
-    char s,f; //
+    char s, f; //
     s = 'e';
     f = '3';
     //Constante float
-    float fl; 
+    float fl;
     fl = 0.3f;
     cd = 1000.4;
-    switch (b){
-        case 4:
-            break;
-
+    switch (b < 100)
+    {
+    case 4:
+        cd = 20;
+        break;
     }
     int i;
-    for (i=0;i<10;i++){
-        int a;
+    for (i = 0; i < 10; i++)
+    {
+        x++;
     }
     if (i == 10)
         i = 0;
-    if(i==0){
-        i=-3;
+    if (i == 0)
+    {
     }
-    else{
+    else
+    {
         algo();
     }
 
     char v;
     i = 'k';
 
-   
-    while(fl<10){
+    while (fl < 10)
+    {
         v++;
     }
-    return (0);
-   /* Compiladores */
-
+    return 0;
+    /* Compiladores */
 }

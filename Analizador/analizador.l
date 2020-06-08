@@ -34,21 +34,21 @@ WS  [ \t\v\f]
 "auto"					{ return(AUTO); }
 "break"					{ return(BREAK); }
 "case"					{ return(CASE); }
-"char"					{ return(CHAR); }
+"char"					{ yylval.str = strdup(yytext); return(CHAR); }
 "const"					{ return(CONST); }
 "continue"				{ return(CONTINUE); }
 "default"				{ return(DEFAULT); }
 "do"					{ return(DO); }
-"double"				{ return(DOUBLE); }
+"double"				{ yylval.str = strdup(yytext); return(DOUBLE); }
 "else"					{ return(ELSE); }
 "enum"					{ return(ENUM); }
 "extern"				{ return(EXTERN); }
-"float"					{ return(FLOAT); }
+"float"					{ yylval.str = strdup(yytext); return(FLOAT); }
 "for"					{ return(FOR); }
 "goto"					{ return(GOTO); }
 "if"					{ return(IF); }
 "inline"				{ return(INLINE); }
-"int"					{ return(INT); }
+"int"					{ yylval.str = strdup(yytext); return(INT); }
 "long"					{ return(LONG); }
 "register"				{ return(REGISTER); }
 "restrict"				{ return(RESTRICT); }
@@ -62,7 +62,7 @@ WS  [ \t\v\f]
 "typedef"				{ return(TYPEDEF); }
 "union"					{ return(UNION); }
 "unsigned"				{ return(UNSIGNED); }
-"void"					{ return(VOID); }
+"void"					{ yylval.str = strdup(yytext); return(VOID); }
 "volatile"				{ return(VOLATILE); }
 "while"					{ return(WHILE); }
 "_Alignas"                              { return ALIGNAS; }
@@ -84,14 +84,14 @@ WS  [ \t\v\f]
 "0"{O}*{IS}?				{ yylval.str = strdup(yytext); return I_CONSTANT; }
 {CP}?"'"([^'\\\n]|{ES})+"'"		{ yylval.str = strdup(yytext); return I_CONSTANT; }
 
-{D}+{E}{FS}?				{ return F_CONSTANT; }
-{D}*"."{D}+{E}?{FS}?			{ return F_CONSTANT; }
-{D}+"."{E}?{FS}?			{ return F_CONSTANT; }
-{HP}{H}+{P}{FS}?			{ return F_CONSTANT; }
-{HP}{H}*"."{H}+{P}{FS}?			{ return F_CONSTANT; }
-{HP}{H}+"."{P}{FS}?			{ return F_CONSTANT; }
+{D}+{E}{FS}?				{ yylval.str = strdup(yytext); return F_CONSTANT; }
+{D}*"."{D}+{E}?{FS}?			{ yylval.str = strdup(yytext); return F_CONSTANT; }
+{D}+"."{E}?{FS}?			{ yylval.str = strdup(yytext); return F_CONSTANT; }
+{HP}{H}+{P}{FS}?			{ yylval.str = strdup(yytext); return F_CONSTANT; }
+{HP}{H}*"."{H}+{P}{FS}?			{ yylval.str = strdup(yytext); return F_CONSTANT; }
+{HP}{H}+"."{P}{FS}?			{ yylval.str = strdup(yytext); return F_CONSTANT; }
 
-({SP}?\"([^"\\\n]|{ES})*\"{WS}*)+	{ return STRING_LITERAL; }
+({SP}?\"([^"\\\n]|{ES})*\"{WS}*)+	{ yylval.str = strdup(yytext); return STRING_LITERAL; }
 
 "..."					{ return ELLIPSIS; }
 ">>="					{ return RIGHT_ASSIGN; }
@@ -113,14 +113,14 @@ WS  [ \t\v\f]
 "||"					{ return OR_OP; }
 "<="					{ return LE_OP; }
 ">="					{ return GE_OP; }
-"=="					{ return EQ_OP; }
+"=="					{ yylval.str = strdup(yytext); return EQ_OP; }
 "!="					{ return NE_OP; }
 ";"					{ return ';'; }
 ("{"|"<%")				{ return '{'; }
 ("}"|"%>")				{ return '}'; }
 ","					{ return ','; }
 ":"					{ return ':'; }
-"="					{ return '='; }
+"="					{ yylval.str = strdup(yytext); return '='; }
 "("					{ return '('; }
 ")"					{ return ')'; }
 ("["|"<:")				{ return '['; }
@@ -135,7 +135,7 @@ WS  [ \t\v\f]
 "/"					{ return '/'; }
 "%"					{ return '%'; }
 "<"					{ yylval.str = strdup(yytext); return '<'; }
-">"					{ return '>'; }
+">"					{ yylval.str = strdup(yytext); return '>'; }
 "^"					{ return '^'; }
 "|"					{ return '|'; }
 "?"					{ return '?'; }
