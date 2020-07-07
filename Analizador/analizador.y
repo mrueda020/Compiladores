@@ -6,6 +6,7 @@
 	extern int lineas;
 	extern FILE * yyin;
 	char* type;
+	char* id;
 	int symbolNumber;
 	void yyerror(char * mensaje)
 	{
@@ -39,7 +40,7 @@
 %type <str> logical_or_expression primary_expression initializer_list unary_operator constant
 %type <str> string generic_selection relational_expression shift_expression equality_expression
 %type <str> labeled_statement init_declarator initializer declaration_specifiers type_specifier
-%type <str> jump_statement 
+%type <str> jump_statement parameter_type_list
 %start translation_unit  /*Simbolo Inicial*/
 %%
 
@@ -194,12 +195,12 @@ assignment_expression
 		{	
 			if($3!=NULL)
 			{	
-				update($1,$3);
+				update($1,$3,false);
 			}
 			
 			else
 			{
-				update($1,"not defined");
+				update($1,"not defined",false);
 			}	
 		}
 		else
@@ -269,12 +270,12 @@ init_declarator
 			printf("%s = %s\n",$1,$3);
 			if($3!=NULL)
 			{	
-				update($1,$3);
+				update($1,$3,false);
 			}
 			
 			else
 			{
-				update($1,"not defined");
+				update($1,"not defined",false);
 			}
 		}
 		else
@@ -421,7 +422,16 @@ direct_declarator
 	| direct_declarator '[' type_qualifier_list ']'
 	| direct_declarator '[' assignment_expression ']'
 	| direct_declarator '(' parameter_type_list ')'
+	{	
+		printf("Aqui %s ",$3);
+		id = $1;
+		update(id," ",true);
+	}
 	| direct_declarator '(' ')' 
+	{
+		id = $1;
+		update(id," ",true);
+	}
 	| direct_declarator '(' identifier_list ')'
 	;
 
@@ -583,6 +593,10 @@ jump_statement
 	| RETURN expression ';' 
 	{
 		printf("return %s\n",$2);
+		if(find(id))
+		{
+			update(id,$2,true);
+		}
 	}
 	;
 

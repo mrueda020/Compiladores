@@ -1,6 +1,11 @@
+int funcion(int a, int z)
+{
+    return 55;
+}
 void algo()
 {
     int c = 0;
+    char d = 'D';
 }
 float algo2()
 {

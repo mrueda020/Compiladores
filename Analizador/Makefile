@@ -10,7 +10,6 @@ a.out: analizador.tab.o lex.yy.o
 	gcc  lex.yy.o analizador.tab.o  -ll -lm 
 run: a.out
 	./a.out "test1.c"
-
 clean:
 	rm *.o
 	rm analizador.tab.c

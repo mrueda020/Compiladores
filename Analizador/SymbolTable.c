@@ -23,7 +23,7 @@ void insert(char *key, char *type)
     head = link;
 }
 
-void update(char *key, char *value)
+void update(char *key, char *value, bool isFunction)
 {
     if (head == NULL)
     {
@@ -41,6 +41,7 @@ void update(char *key, char *value)
             return;
         }
     }
+    current->isFunction = isFunction;
     current->value = value;
 }
 
@@ -75,11 +76,11 @@ void printTable()
     printf("Symbol Table\n");
     printf("\n");
     struct node *ptr = head;
-    printf("SymbolNumber\tID\t\tType\t\tValue\n");
+    printf("SymbolNumber\tID\t\tType\t\tValue\t\tFunction\n");
     int i = 0;
     while (ptr != NULL)
     {
-        printf("%d\t\t%s\t\t%s\t\t%s\n", i++, ptr->key, ptr->type, ptr->value);
+        printf("%d\t\t%s\t\t%s\t\t%s\t\t%d\n", i++, ptr->key, ptr->type, ptr->value, ptr->isFunction);
         ptr = ptr->next;
     }
 }
