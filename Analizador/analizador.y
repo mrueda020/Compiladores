@@ -1,13 +1,20 @@
 %{
 	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include "SymbolTable.c"
 	extern int lineas;
 	extern FILE * yyin;
-	void yyerror(char * mensaje){
-		printf("error: %s in line %d\n", mensaje,lineas+1);
+	char* type;
+	int symbolNumber;
+	void yyerror(char * mensaje)
+	{
+		printf("Error: %s in line %d\n", mensaje,lineas+1);
 	}
 %}
 
-%union{
+%union
+{
 	char* str;
 }
 
@@ -180,7 +187,26 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression
-	| unary_expression assignment_operator assignment_expression {printf("%s %s %s\n",$1,$2,$3);}
+	| unary_expression assignment_operator assignment_expression 
+	{
+		printf("%s %s %s\n",$1,$2,$3);
+		if(find($1))
+		{	
+			if($3!=NULL)
+			{	
+				update($1,$3);
+			}
+			
+			else
+			{
+				update($1,"not defined");
+			}	
+		}
+		else
+		{
+			yyerror("Variable no declarada ");
+		}
+	}
 	;
 
 assignment_operator
@@ -216,7 +242,11 @@ declaration_specifiers
 	: storage_class_specifier declaration_specifiers
 	| storage_class_specifier
 	| type_specifier declaration_specifiers 
-	| type_specifier 								{printf("%s ",$1);}
+	| type_specifier 
+	{
+		type = $1;
+		printf("%s ",type);
+	}
 	| type_qualifier declaration_specifiers
 	| type_qualifier
 	| function_specifier declaration_specifiers
@@ -231,7 +261,28 @@ init_declarator_list
 	;
 
 init_declarator
-	: declarator '=' initializer {printf("%s = %s\n",$1,$3);} 
+	: declarator '=' initializer 
+	{
+		
+		if(find($1))
+		{	
+			printf("%s = %s\n",$1,$3);
+			if($3!=NULL)
+			{	
+				update($1,$3);
+			}
+			
+			else
+			{
+				update($1,"not defined");
+			}
+		}
+		else
+		{
+			yyerror("Variable no declarada ");
+		}
+
+	} 
 	| declarator
 	;
 
@@ -348,7 +399,17 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER {printf("Identificador %s\n",$1);}
+	: IDENTIFIER 
+	{	printf("Identificador %s\n",$1); 
+		if(find($1))
+		{
+			yyerror("El identificador ya existe ");	
+		}
+		else
+		{
+			insert($1, type);
+		}	
+	}
 	| '(' declarator ')'
 	| direct_declarator '[' ']'
 	| direct_declarator '[' '*' ']'
@@ -360,7 +421,7 @@ direct_declarator
 	| direct_declarator '[' type_qualifier_list ']'
 	| direct_declarator '[' assignment_expression ']'
 	| direct_declarator '(' parameter_type_list ')'
-	| direct_declarator '(' ')'
+	| direct_declarator '(' ')' 
 	| direct_declarator '(' identifier_list ')'
 	;
 
@@ -519,7 +580,10 @@ jump_statement
 	| CONTINUE ';'
 	| BREAK ';'
 	| RETURN ';'
-	| RETURN expression ';' {printf("return %s\n",$2);}
+	| RETURN expression ';' 
+	{
+		printf("return %s\n",$2);
+	}
 	;
 
 translation_unit
@@ -544,16 +608,19 @@ declaration_list
 %%
 
 
-int main(int argc, char **argv){
-
-	if (argc>1){	
+int main(int argc, char **argv)
+{
+	if (argc>1)
+	{	
 	  yyin = fopen(argv[1], "r");
 	}
-	else{
+	else
+	{
 		printf("Introduce un archivo .c desde los argumentos\n");
 		return 0;
 	}
-
 	yyparse();
+	printf("\n\n");
+	printTable();
 	return 0;
 }
