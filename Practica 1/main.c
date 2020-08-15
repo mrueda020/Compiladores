@@ -1,30 +1,75 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "AFNNodo.c"
+#include "AFNNodo.h"
+
 //Pila para convertir a postfijo
-struct nodo
+struct Nodo
 {
 	char op;
-	struct nodo *siguiente;
+	struct Nodo *siguiente;
 };
 
-//Pila para evaluar la expresion postfijp
-struct Pila
+//Pila para evaluar la expresion postfijo
+struct PilaAutomata
 {
 	struct AFNNodo *nodo;
-	struct Pila *siguiente;
+	struct PilaAutomata *siguiente;
 };
 
 //Metodos para la primera pila
-void agregar(char op, struct nodo **superior);
-void eliminarUltimo(struct nodo **superior);
-char ultimo(struct nodo *superior);
+char ultimo(struct Nodo *superior)
+{
+	if (superior == NULL)
+		return -1;
+	return superior->op;
+}
 
-//Metodos para l segunda pila
-void agregar1(struct AFNNodo *op, struct Pila **superior);
-void eliminarUltimo1(struct Pila **superior);
-struct AFNNodo *ultimo1(struct Pila *superior);
+void agregar(char op, struct Nodo **superior)
+{
+
+	struct Nodo *nuevoNodo = malloc(sizeof(struct Nodo));
+	nuevoNodo->op = op;
+	nuevoNodo->siguiente = *superior;
+	*superior = nuevoNodo;
+}
+
+void eliminarUltimo(struct Nodo **superior)
+{
+	if (*superior != NULL)
+	{
+		struct Nodo *temporal = *superior;
+		*superior = (*superior)->siguiente;
+		free(temporal);
+	}
+}
+
+//Metodos para la segunda pila
+struct AFNNodo *ultimoAutomata(struct PilaAutomata *superior)
+{
+	if (superior == NULL)
+		return NULL;
+	return superior->nodo;
+}
+
+void agregarAutomata(struct AFNNodo *op, struct PilaAutomata **superior)
+{
+
+	struct PilaAutomata *nuevoNodo = malloc(sizeof(struct PilaAutomata));
+	nuevoNodo->nodo = op;
+	nuevoNodo->siguiente = *superior;
+	*superior = nuevoNodo;
+}
+
+void eliminarAutomata(struct PilaAutomata **superior)
+{
+	if (*superior != NULL)
+	{
+		struct PilaAutomata *temporal = *superior;
+		*superior = (*superior)->siguiente;
+		free(temporal);
+	}
+}
 
 //Checa si es un opernado
 int esOperando(char ch)
@@ -46,12 +91,11 @@ int prec(char c)
 }
 
 //Convierte de infijo a postfijo
-char *infixToPosfix(char *exp)
+char *infijoAPosfijo(char *exp)
 {
 	//Se crrea una pila
-	struct nodo *superior = NULL;
+	struct Nodo *superior = NULL;
 	int loncad = strlen(exp);
-	char pos[loncad];
 	int i, k;
 	agregar('#', &superior);
 	//Recorremos la expresion
@@ -107,17 +151,13 @@ char *infixToPosfix(char *exp)
 	return exp;
 }
 
-int main(int argc, char *argv[])
+char *agregarConcatenacion(char *exp)
 {
-	char *exp;
-	exp = malloc(strlen(argv[1]));
-	strcpy(exp, argv[1]);
 	int loncad = strlen(exp);
 	char *pos = malloc(100);
+
 	int i;
-
 	int k = -1;
-
 	//Agregamos la concatenacion a la expresion regular
 	for (i = 0; i < loncad; i++)
 	{
@@ -190,113 +230,78 @@ int main(int argc, char *argv[])
 		}
 	}
 	pos[++k] = '\0';
-	//printf("%s\n",pos);
-	//printf("%ld\n",strlen(pos));
-	char *posfix = infixToPosfix(pos);
-	//printf("%s\n",posfix);
+	return pos;
+}
 
-	loncad = strlen(posfix);
-	struct Pila *pila = NULL;
-	int noEstados = 0;
+struct AFNNodo *evaluarAutomata(char *posfix)
+{
+	int loncad = strlen(posfix);
+	struct PilaAutomata *pila = NULL;
+	int i, noEstados = 0;
 	for (i = 0; i < loncad; i++)
 	{
 		if (esOperando(posfix[i]))
 		{
-			struct AFNNodo *tmp = CrearAutomata(posfix[i], noEstados);
-			agregar1(tmp, &pila);
+			struct AFNNodo *tmp = crearAutomata(posfix[i], noEstados);
+			agregarAutomata(tmp, &pila);
 			noEstados += 2;
 		}
 		else if (posfix[i] == '.')
 		{
-			struct AFNNodo *tmp = ultimo1(pila);
-			eliminarUltimo1(&pila);
-			struct AFNNodo *tmp1 = ultimo1(pila);
-			eliminarUltimo1(&pila);
+			struct AFNNodo *tmp = ultimoAutomata(pila);
+			eliminarAutomata(&pila);
+			struct AFNNodo *tmp1 = ultimoAutomata(pila);
+			eliminarAutomata(&pila);
 			struct AFNNodo *tmp2 = concatenar(tmp1, tmp);
 			//noEstados +=2;
-			agregar1(tmp2, &pila);
+			agregarAutomata(tmp2, &pila);
 		}
 		else if (posfix[i] == '+')
 		{
-			struct AFNNodo *tmp = ultimo1(pila);
-			eliminarUltimo1(&pila);
+			struct AFNNodo *tmp = ultimoAutomata(pila);
+			eliminarAutomata(&pila);
 			struct AFNNodo *tmp1 = crearCerraduraPostiva(tmp, noEstados);
-			agregar1(tmp1, &pila);
+			agregarAutomata(tmp1, &pila);
 			noEstados += 2;
 		}
 		else if (posfix[i] == '*')
 		{
-			struct AFNNodo *tmp = ultimo1(pila);
-			eliminarUltimo1(&pila);
+			struct AFNNodo *tmp = ultimoAutomata(pila);
+			eliminarAutomata(&pila);
 			struct AFNNodo *tmp1 = crearCerraduraKleen(tmp, noEstados);
-			agregar1(tmp1, &pila);
+			agregarAutomata(tmp1, &pila);
 			noEstados += 2;
 		}
 		else if (posfix[i] == '|')
 		{
-			struct AFNNodo *tmp = ultimo1(pila);
-			eliminarUltimo1(&pila);
-			struct AFNNodo *tmp1 = ultimo1(pila);
-			eliminarUltimo1(&pila);
+			struct AFNNodo *tmp = ultimoAutomata(pila);
+			eliminarAutomata(&pila);
+			struct AFNNodo *tmp1 = ultimoAutomata(pila);
+			eliminarAutomata(&pila);
 			struct AFNNodo *tmp2 = crearUnion(tmp1, tmp, noEstados);
 			noEstados += 2;
-			agregar1(tmp2, &pila);
+			agregarAutomata(tmp2, &pila);
 		}
 	}
-	struct AFNNodo *automata = ultimo1(pila);
+	struct AFNNodo *automata = ultimoAutomata(pila);
+	return automata;
+}
+
+int main(int argc, char *argv[])
+{
+
+	if (argc <= 1)
+	{
+		printf("Ingresa una expresion regular\n");
+		return 0;
+	}
+
+	char *exp = malloc(strlen(argv[1]));
+	strcpy(exp, argv[1]);
+	char *exp_cot = agregarConcatenacion(exp);
+	char *posfix = infijoAPosfijo(exp_cot);
+	struct AFNNodo *automata = evaluarAutomata(posfix);
 	generarArchivo(automata);
 
 	return 0;
-}
-
-char ultimo(struct nodo *superior)
-{
-	if (superior == NULL)
-		return -1;
-	return superior->op;
-}
-
-void agregar(char op, struct nodo **superior)
-{
-
-	struct nodo *nuevoNodo = malloc(sizeof(struct nodo));
-	nuevoNodo->op = op;
-	nuevoNodo->siguiente = *superior;
-	*superior = nuevoNodo;
-}
-
-void eliminarUltimo(struct nodo **superior)
-{
-	if (*superior != NULL)
-	{
-		struct nodo *temporal = *superior;
-		*superior = (*superior)->siguiente;
-		free(temporal);
-	}
-}
-
-struct AFNNodo *ultimo1(struct Pila *superior)
-{
-	if (superior == NULL)
-		return NULL;
-	return superior->nodo;
-}
-
-void agregar1(struct AFNNodo *op, struct Pila **superior)
-{
-
-	struct Pila *nuevoNodo = malloc(sizeof(struct Pila));
-	nuevoNodo->nodo = op;
-	nuevoNodo->siguiente = *superior;
-	*superior = nuevoNodo;
-}
-
-void eliminarUltimo1(struct Pila **superior)
-{
-	if (*superior != NULL)
-	{
-		struct Pila *temporal = *superior;
-		*superior = (*superior)->siguiente;
-		free(temporal);
-	}
 }
